@@ -18,12 +18,12 @@ const routes = [
     ],
   },
   {
-    path: "/",
+    path: "/login",
     element: <App />,
     loader: () => "로그인",
     children: [
       {
-        path: "/",
+        path: "/login",
         loader: () => "로그인",
         element: <LoginPage />,
       },
