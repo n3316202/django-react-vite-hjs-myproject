@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import bardService from "../services/board/BoardService";
 
 const LoginPage = () => {
+  const [user, setUser] = useState({ username: "", password: "" });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    console.log(name, value);
+
+    //중첩 구조 분해 (nested destructuring)
+    setUser({ ...user, [name]: value });
+  };
+
+  const onLoginClick = (e) => {
+    e.preventDefault();
+    bardService.getToken(user).then((response) => {
+      console.log(response);
+    });
+  };
+
   return (
     <div>
       <div className="container-fluid py-5 h-100">
@@ -15,20 +35,28 @@ const LoginPage = () => {
                 <form className="form">
                   <div className="form-outline mb-4">
                     <input
-                      type="email"
-                      placeholder="Email Address"
+                      type="text"
+                      name="username"
+                      placeholder="아이디"
+                      onChange={handleInputChange}
                       className="form-control form-control-lg"
                     />{" "}
                   </div>
                   <div className="form-outline mb-4">
                     <input
+                      name="password"
                       type="password"
-                      placeholder="Password"
+                      placeholder="패스워드"
+                      onChange={handleInputChange}
                       className="form-control form-control-lg"
                     />{" "}
                   </div>
                   <div className="form-outline mb-4 d-grid gap-2">
-                    <button type="submit" className="btn btn-info">
+                    <button
+                      type="submit"
+                      className="btn btn-info"
+                      onClick={onLoginClick}
+                    >
                       Login{" "}
                     </button>
                   </div>
