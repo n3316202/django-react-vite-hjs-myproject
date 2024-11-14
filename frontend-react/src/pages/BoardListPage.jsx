@@ -22,15 +22,15 @@ const BoardListPage = () => {
 
   useEffect(() => {
     console.log("use Effective 실행");
-    initBoards();
+    getBoards();
   }, []);
 
-  const initBoards = () => {
+  const getBoards = () => {
     boardService
-      .getPagingList()
+      .getBoards()
       .then((response) => {
         console.log(response);
-        setBoards(response.data.boards);
+        //setBoards(response.data.boards);
       })
       .catch((e) => {
         console.log(e);

@@ -1,6 +1,7 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./../App";
+import BoardListPage from "../pages/BoardListPage";
 
 const routes = [
   {
@@ -11,7 +12,7 @@ const routes = [
       {
         path: "/",
         loader: () => "게시판",
-        // element: <LottoPage />,
+        element: <BoardListPage />,
       },
     ],
   },

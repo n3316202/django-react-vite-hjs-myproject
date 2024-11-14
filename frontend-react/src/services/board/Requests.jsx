@@ -1,7 +1,5 @@
-import axios from "axios";
-
 const requests = {
-  fetch: "",
+  getList: "/board",
 };
 
 export default requests;
