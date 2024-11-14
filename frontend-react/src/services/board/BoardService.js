@@ -1,5 +1,5 @@
-import http from "./HttpCommon";
-import request from "./Requests";
+import http from "./HttpCommon.js";
+import request from "./Requests.js";
 
 const getBoardList = () => {
   return http.get(request.getList);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import boardService from "../../services/BoardService";
+
 import { Link } from "react-router-dom";
+import boardService from "../services/board/BoardService";
 
 const BoardListPage = () => {
   const [boards, setBoards] = useState([]);
@@ -27,10 +28,10 @@ const BoardListPage = () => {
 
   const getBoards = () => {
     boardService
-      .getBoards()
+      .getBoardList()
       .then((response) => {
         console.log(response);
-        //setBoards(response.data.boards);
+        setBoards(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -54,7 +55,7 @@ const BoardListPage = () => {
 
   return (
     <div className="container mt-3">
-      <div className="container-fluid">
+      <div className="container-fluid text-center">
         <h1 className="h3 mb-2 text-gray-800">게시판</h1>
         <p className="mb-4">
           DataTables is a third party plugin that is used to generate the demo
@@ -94,22 +95,20 @@ const BoardListPage = () => {
                 <tbody>
                   {boards &&
                     boards.map((board) => (
-                      <tr key={board.bid}>
-                        <td>{board.bid}</td>
-                        <td>{board.bname}</td>
+                      <tr key={board.id}>
+                        <td>{board.id}</td>
+                        <td>{board.name}</td>
 
                         <td>
-                          <Link to={"/boards/" + board.bid}>
-                            {board.btitle}
-                          </Link>
+                          <Link to={"/board/" + board.id}>{board.title}</Link>
                         </td>
 
-                        <td>{board.bdate}</td>
-                        <td>{board.bhit}</td>
+                        <td>{board.updated_at}</td>
+                        <td>{board.hit}</td>
                         <td className="text-center">
                           <button
                             className="btn btn-success"
-                            value={board.bid}
+                            value={board.id}
                             onClick={deleteBoard}
                           >
                             삭제
