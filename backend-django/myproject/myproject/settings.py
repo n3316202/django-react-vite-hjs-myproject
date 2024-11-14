@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'corsheaders', # React와 연결 하기 위한 CORS 추가 
+    'corsheaders', # React와 연결 하기 위한 CORS 추가
+    'rest_framework',
+    'board', 
 ]
 
 MIDDLEWARE = [
