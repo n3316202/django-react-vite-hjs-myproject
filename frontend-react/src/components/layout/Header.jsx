@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../router/Router";
 
@@ -8,13 +8,7 @@ const Header = () => {
 
   useEffect(() => {
     if (ACCESS_TOKEN) {
-      fetchUser()
-        .then((response) => {
-          setUser(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      console.log("헤더실행:", ACCESS_TOKEN);
     }
   }, [ACCESS_TOKEN]);
 

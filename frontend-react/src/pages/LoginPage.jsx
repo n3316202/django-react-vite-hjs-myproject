@@ -7,7 +7,6 @@ const LoginPage = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
     console.log(name, value);
 
     //중첩 구조 분해 (nested destructuring)
@@ -17,13 +16,13 @@ const LoginPage = () => {
   const onLoginClick = (e) => {
     e.preventDefault();
     auth
-      .getToken(user)
+      .login(user)
       .then((response) => {
         console.log(response);
         localStorage.clear();
-        localStorage.setItem("tokenType", response.data.tokenType);
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.refreshToken);
+        //localStorage.setItem("tokenType", response.data.tokenType);
+        localStorage.setItem("accessToken", response.data.token.access);
+        localStorage.setItem("refreshToken", response.data.token.refresh);
         //window.location.href = `/home`;
       })
       .catch((error) => {

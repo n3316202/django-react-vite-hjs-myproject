@@ -1,7 +1,7 @@
 const requests = {
   getList: "/board",
   getToken: "/account/api/token",
-  getUser: "/account/api/user",
+  login: "/account/login",
 };
 
 export default requests;
