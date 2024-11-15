@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import bardService from "../services/board/BoardService";
 import auth from "../services/auth/AuthService.js";
+import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const [user, setUser] = useState({ username: "", password: "" });
-  const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -20,10 +19,11 @@ const LoginPage = () => {
       .then((response) => {
         console.log(response);
         localStorage.clear();
-        //localStorage.setItem("tokenType", response.data.tokenType);
         localStorage.setItem("accessToken", response.data.token.access);
         localStorage.setItem("refreshToken", response.data.token.refresh);
-        //window.location.href = `/home`;
+        //window.location.href = `/`;
+        const navigate = useNavigate();
+        navigate("/", { replace: false });
       })
       .catch((error) => {
         console.log(error);

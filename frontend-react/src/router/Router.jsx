@@ -3,15 +3,28 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./../App";
 import BoardListPage from "../pages/BoardListPage";
 import LoginPage from "../pages/LoginPage";
+import MainPage from "../pages/MainPage";
 
 const routes = [
   {
     path: "/",
     element: <App />,
-    loader: () => "게시판",
+    loader: () => "메인페이지",
     children: [
       {
         path: "/",
+        loader: () => "메인페이지",
+        element: <MainPage />,
+      },
+    ],
+  },
+  {
+    path: "/board",
+    element: <App />,
+    loader: () => "게시판",
+    children: [
+      {
+        path: "/board",
         loader: () => "게시판",
         element: <BoardListPage />,
       },
