@@ -2,21 +2,18 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../router/Router";
 import { LoginContext } from "../../context/LoginContext";
-import { useUserContext } from "../../context/UserContext";
+
 const Header = () => {
   const loginContext = useContext(LoginContext);
   const ACCESS_TOKEN = localStorage.getItem("accessToken");
   const USER_NAME = localStorage.getItem("userName");
 
-  console.log(loginContext);
-  const { user } = useUserContext();
-  console.log("유저다");
-  console.log(user);
+  console.log("헤더", loginContext);
 
   useEffect(() => {
     if (ACCESS_TOKEN) {
-      console.log("헤더실행:", ACCESS_TOKEN);
-      console.log("유저이름:", USER_NAME);
+      //console.log("헤더실행:", ACCESS_TOKEN);
+      //console.log("유저이름:", USER_NAME);
     }
   }, [ACCESS_TOKEN, USER_NAME]);
 
