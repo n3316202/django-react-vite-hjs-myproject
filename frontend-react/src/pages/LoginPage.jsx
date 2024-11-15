@@ -16,14 +16,19 @@ const LoginPage = () => {
 
   const onLoginClick = (e) => {
     e.preventDefault();
-    auth.getToken(user).then((response) => {
-      console.log(response);
-      localStorage.clear();
-      localStorage.setItem("tokenType", response.tokenType);
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-      //window.location.href = `/home`;
-    });
+    auth
+      .getToken(user)
+      .then((response) => {
+        console.log(response);
+        localStorage.clear();
+        localStorage.setItem("tokenType", response.data.tokenType);
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+        //window.location.href = `/home`;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

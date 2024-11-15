@@ -3,6 +3,21 @@ import { Link } from "react-router-dom";
 import { routes } from "../../router/Router";
 
 const Header = () => {
+  const [user, setUser] = useState({});
+  const ACCESS_TOKEN = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    if (ACCESS_TOKEN) {
+      fetchUser()
+        .then((response) => {
+          setUser(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [ACCESS_TOKEN]);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

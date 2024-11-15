@@ -5,10 +5,6 @@ const getBoardList = () => {
   return http.get(request.getList);
 };
 
-const getToken = async (user) => {
-  return await http.post(request.getToken, user);
-};
-
 // const get = (id) => {
 //   return http.get(`/rboard/${id}`);
 // };
@@ -39,7 +35,6 @@ const getToken = async (user) => {
 
 export default {
   getBoardList,
-  getToken,
   // get,
   // write,
   // update,
