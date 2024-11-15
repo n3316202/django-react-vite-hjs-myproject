@@ -1,16 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../router/Router";
-
+import { LoginContext } from "../../context/LoginContext";
+import { useUserContext } from "../../context/UserContext";
 const Header = () => {
-  const [user, setUser] = useState({});
+  const loginContext = useContext(LoginContext);
   const ACCESS_TOKEN = localStorage.getItem("accessToken");
+  const USER_NAME = localStorage.getItem("userName");
+
+  console.log(loginContext);
+  const { user } = useUserContext();
+  console.log("유저다");
+  console.log(user);
 
   useEffect(() => {
     if (ACCESS_TOKEN) {
       console.log("헤더실행:", ACCESS_TOKEN);
+      console.log("유저이름:", USER_NAME);
     }
-  }, [ACCESS_TOKEN]);
+  }, [ACCESS_TOKEN, USER_NAME]);
+
+  const onLoginClick = (e) => {
+    //e.preventDefault();
+
+    console.log("로그아웃");
+    localStorage.clear();
+  };
 
   return (
     <>
@@ -43,8 +58,11 @@ const Header = () => {
                       role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
+                      onClick={onLoginClick}
                     >
-                      {route.loader()}
+                      {route.loader() == "로그인" && USER_NAME
+                        ? "로그아웃" + "(" + USER_NAME + ")"
+                        : route.loader()}
                     </Link>
                     {route.children && (
                       <ul

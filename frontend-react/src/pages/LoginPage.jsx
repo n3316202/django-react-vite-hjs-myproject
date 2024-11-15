@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, createContext } from "react";
+
 import auth from "../services/auth/AuthService.js";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../context/LoginContext";
+import { useUserContext } from "../context/UserContext";
+
 const LoginPage = () => {
+  //LoginContext를 import하고 actions를 셋팅한다음에 값을 변경
+  //const { actions } = useContext(LoginContext);
+  //const { setIsLoggedIn, setUsername } = actions;
+
   const [user, setUser] = useState({ username: "", password: "" });
 
   const handleInputChange = (event) => {
@@ -12,6 +20,8 @@ const LoginPage = () => {
     setUser({ ...user, [name]: value });
   };
 
+  const { setUser2 } = useUserContext();
+
   const onLoginClick = (e) => {
     e.preventDefault();
     auth
@@ -21,9 +31,18 @@ const LoginPage = () => {
         localStorage.clear();
         localStorage.setItem("accessToken", response.data.token.access);
         localStorage.setItem("refreshToken", response.data.token.refresh);
-        //window.location.href = `/`;
-        const navigate = useNavigate();
-        navigate("/", { replace: false });
+        localStorage.setItem("userName", response.data.user.username);
+
+        //setIsLoggedIn(true);
+        console.log("유저이름" + response.data.user.username);
+        //setUsername(response.data.user.username);
+        //setUsername("admin");
+
+        setUser2(response.data.user.username);
+
+        window.location.href = `/`;
+        //const navigate = useNavigate();
+        //navigate("/", { replace: false });
       })
       .catch((error) => {
         console.log(error);
