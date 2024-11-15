@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import bardService from "../services/board/BoardService";
-
+import auth from "../services/auth/AuthService.js";
 const LoginPage = () => {
   const [user, setUser] = useState({ username: "", password: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -16,8 +16,13 @@ const LoginPage = () => {
 
   const onLoginClick = (e) => {
     e.preventDefault();
-    bardService.getToken(user).then((response) => {
+    auth.getToken(user).then((response) => {
       console.log(response);
+      localStorage.clear();
+      localStorage.setItem("tokenType", response.tokenType);
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("refreshToken", response.refreshToken);
+      //window.location.href = `/home`;
     });
   };
 
