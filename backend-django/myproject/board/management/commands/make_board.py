@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
         Board.objects.all().delete()
 
-        for i in range(1, 101):
+        for i in range(1, 1023):
             board, created = Board.objects.get_or_create(name=f"테스트 board {i}",title=f"안녕하세요 {i}")
             if created:
                 print(f"{i}번째 board 생성 완료")

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Board
 from .serializers import BoardSerializer
+from rest_framework import generics,viewsets
 
 class BoardsAPIView(APIView):
     
@@ -30,4 +31,8 @@ class BoardAPIView(APIView):
     def update(self, request):
         pass
 
+
+class BoardViewSet(viewsets.ModelViewSet):
+    queryset = Board.objects.all()
+    serializer_class = BoardSerializer
 

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import boardService from "../services/board/BoardService";
+import PaginationB5 from "../components/board/PaginationB5";
 
 const BoardListPage = () => {
   const [boards, setBoards] = useState([]);
+  const [paging, setPaging] = useState([]);
 
   // 정리하면 아래와 같다.
 
@@ -31,7 +33,8 @@ const BoardListPage = () => {
       .getBoardList()
       .then((response) => {
         console.log(response);
-        setBoards(response.data);
+        //setBoards(response.data.data);
+        //setPaging(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -120,10 +123,8 @@ const BoardListPage = () => {
               </table>
             </div>
             {/* 페이징           */}
-            {/* <PaginationB5
-            paging={paging}
-            onClickPaging={onClickPaging}
-          ></PaginationB5> */}
+            {/* <PaginationB5 paging={paging} /> */}
+
             <hr />
             <Link to="/boards/write">
               <button type="button" className="btn btn-primary">
