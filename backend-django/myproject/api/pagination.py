@@ -2,7 +2,7 @@ from collections import OrderedDict
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django.conf import settings
-
+from common.pagingUtil import CommonPage
 class CustomPageNumberPagination(PageNumberPagination):
     default_page_size = settings.REST_FRAMEWORK["PAGE_SIZE"]
 
@@ -34,11 +34,13 @@ class CustomPageNumberPagination(PageNumberPagination):
         except:
             next_page_number = None
 
+        commonPaging =  CommonPage(self.page.paginator.count, self.page.number, 10)
+
         return Response(
             OrderedDict(
                 [
                     ("data", data),
-                    ("page_size", len(data)), # 페이지 사이즈
+                    ("page_size", len(data)), # 한페이지당 보드 갯수
                     ("total_count", self.page.paginator.count), # 데이터 총 수
                     ("page_count", self.page.paginator.num_pages), # 총 페이지 수
                     ("current_page", self.page.number), # 현재 페이지
@@ -46,7 +48,8 @@ class CustomPageNumberPagination(PageNumberPagination):
                     ("next_page_number", next_page_number),
                     ("previous", self.get_previous_link()),
                     ("previous_page_number", previous_page_number),
-                    ("page_range", list(self.page.paginator.page_range)),
+                    ("page_range", list(commonPaging.page_range)),
+
                 ]
             )
         )
