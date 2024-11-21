@@ -1,5 +1,11 @@
 from django.contrib import admin
 from .models import Board
 
-# Register your models here.
-admin.site.register(Board)
+
+@admin.register(Board)
+class BoardAdmin(admin.ModelAdmin):
+    list_display = (
+        "__str__",
+        "created_at",
+        "updated_at"
+    )
