@@ -39,7 +39,7 @@ class CustomPageNumberPagination(PageNumberPagination):
         return Response(
             OrderedDict(
                 [
-                    ("data", data),
+                    ("boards", data),
                     ("page_size", len(data)), # 한페이지당 보드 갯수
                     ("total_count", self.page.paginator.count), # 데이터 총 수
                     ("page_count", self.page.paginator.num_pages), # 총 페이지 수
@@ -48,6 +48,10 @@ class CustomPageNumberPagination(PageNumberPagination):
                     ("next_page_number", next_page_number),
                     ("previous", self.get_previous_link()),
                     ("previous_page_number", previous_page_number),
+                    ("start_page", commonPaging.startPage),
+                    ("end_page", commonPaging.endPage),
+                    ("is_next", commonPaging.isNext),
+                    ("is_prev", commonPaging.isPrev),                        
                     ("page_range", list(commonPaging.page_range)),
 
                 ]

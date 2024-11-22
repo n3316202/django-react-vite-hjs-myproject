@@ -3,23 +3,14 @@ import { Link } from "react-router-dom";
 
 //https://getbootstrap.com/docs/5.0/components/pagination/
 
-function PaginationB5(paging) {
+function PaginationB5({ paging, onClickPaging }) {
   const rendering = () => {
     const row = [];
 
-    for (let i = paging.startPage; i <= paging.endPage; i++) {
-      console.log(
-        "/list/" + "?pageNum=" + i + "&" + "amount=" + paging.criteria.amount
-      );
-
-      const query =
-        "/boards/list" +
-        "?pageNum=" +
-        i +
-        "&" +
-        "amount=" +
-        paging.criteria.amount;
-
+    //http://127.0.0.1:8000/board/?page=1
+    for (let i = paging.start_page; i <= paging.end_page; i++) {
+      const query = "/board/" + "?page=" + i;
+      console.log(query);
       row.push(
         <li className="page-item">
           <Link to={query} onClick={onClickPaging} className="page-link">
@@ -35,35 +26,47 @@ function PaginationB5(paging) {
   return (
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
+        {paging.is_prev == true && (
+          <li className="page-item">
+            {/* <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a> */}
+            <Link
+              to={"/board/" + "?page=" + (paging.start_page - 1)}
+              onClick={onClickPaging}
+              className="page-link"
+              aria-label="Previous"
+            >
+              {/* <span aria-hidden="true">&laquo;</span> */}
+              &laquo;
+            </Link>
+          </li>
+        )}
 
         {rendering()}
 
-        <li class="page-item">
-          <a class="page-link" href="#">
-            1
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">
-            2
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">
-            3
-          </a>
-        </li>
-
-        <li class="page-item">
+        {/* <li class="page-item">
           <a class="page-link" href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
-        </li>
+        </li> */}
+
+        {paging.is_next == true && (
+          <li className="page-item">
+            {/* <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a> */}
+            <Link
+              to={"/board/" + "?page=" + (paging.end_page + 1)}
+              onClick={onClickPaging}
+              className="page-link"
+              aria-label="Next"
+            >
+              {/* <span aria-hidden="true">&laquo;</span> */}
+              &raquo;
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );

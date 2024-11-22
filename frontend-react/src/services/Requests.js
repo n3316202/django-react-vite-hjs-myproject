@@ -1,5 +1,6 @@
 const requests = {
-  getList: "/board",
+  // getList: "/board/?page=",
+  getList: "/board/",
   getToken: "/account/api/token",
   login: "/account/login",
 };

@@ -18,8 +18,6 @@ class CommonPage:
         self.totalPage = math.ceil(totalCnt/pageSize) - 1 # 전체 페이지 수
 
 		# 10개씩 그룹을 나눔
-        #self.start = (self.curPage//self.pageSize) *10  + 1
-        #self.end = self.start + 10
         
         self.endPage = int((math.ceil(curPage / 10.0)) * 10)
         self.startPage =self.endPage - 9 # 페이지 갯수 10개를 기준으로 했을때  

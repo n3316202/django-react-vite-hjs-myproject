@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import boardService from "../services/board/BoardService";
 import PaginationB5 from "../components/board/PaginationB5";
+import Requests from "./../services/Requests";
 
 const BoardListPage = () => {
   const [boards, setBoards] = useState([]);
@@ -28,18 +29,37 @@ const BoardListPage = () => {
     getBoards();
   }, []);
 
-  const getBoards = () => {
+  const getBoards = (path = Requests.getList, search = "") => {
     boardService
-      .getBoardList()
+      .getPagingList(path, search)
       .then((response) => {
         console.log(response);
-        //setBoards(response.data.data);
-        //setPaging(response.data);
+        setBoards(response.data.boards);
+        setPaging(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
   };
+
+  const onClickPaging = (e) => {
+    e.preventDefault(); // 기존에 링크 동작을 하지 말아라
+
+    console.log(e.target.pathname); //board
+    console.log(e.target.search); //?page=97
+
+    boardService
+      .getPagingList(e.target.pathname, e.target.search)
+      .then((response) => {
+        console.log(response);
+        setBoards(response.data.boards);
+        setPaging(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  // method:DELETE http://127.0.0.1:8000/board/214/
 
   const deleteBoard = (e) => {
     const { name, value } = e.target;
@@ -48,11 +68,12 @@ const BoardListPage = () => {
     boardService
       .remove(value)
       .then((respose) => {
-        console.log(respose);
-        initBoards();
+        if (paging.page_size == 1)
+          getBoards(Requests.getList, "?page=" + paging.previous_page_number);
+        else getBoards(Requests.getList, "?page=" + paging.current_page);
       })
       .catch((e) => {
-        console.log(e);
+        console.log(e + "안녕하세요");
       });
   };
 
@@ -122,9 +143,16 @@ const BoardListPage = () => {
                 </tbody>
               </table>
             </div>
-            {/* 페이징           */}
-            {/* <PaginationB5 paging={paging} /> */}
-
+            {/* 페이징*/}
+            {paging != null ? (
+              <div className="d-flex justify-content-center">
+                <PaginationB5
+                  className="text-center"
+                  paging={paging}
+                  onClickPaging={onClickPaging}
+                />
+              </div>
+            ) : null}
             <hr />
             <Link to="/boards/write">
               <button type="button" className="btn btn-primary">

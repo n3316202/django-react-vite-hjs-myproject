@@ -5,6 +5,9 @@ const getBoardList = () => {
   return http.get(request.getList);
 };
 
+const getPagingList = (path = "/board", search = "") => {
+  return http.get(path + search);
+};
 // const get = (id) => {
 //   return http.get(`/rboard/${id}`);
 // };
@@ -17,9 +20,9 @@ const getBoardList = () => {
 //   return http.put(`/rboard/${id}`, data);
 // };
 
-// const remove = (id) => {
-//   return http.delete(`/rboard/${id}`);
-// };
+const remove = (id) => {
+  return http.delete(`/board/${id}/`);
+};
 
 // const removeAll = () => {
 //   return http.delete(`/tutorials`);
@@ -35,10 +38,11 @@ const getBoardList = () => {
 
 export default {
   getBoardList,
+  getPagingList,
+  remove,
   // get,
   // write,
   // update,
-  // remove,
   // removeAll,
   // findByTitle,
   // getPagingList,
