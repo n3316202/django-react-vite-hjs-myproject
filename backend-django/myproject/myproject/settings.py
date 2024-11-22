@@ -57,11 +57,12 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False
+CORS_ALLOW_CREDENTIALS = True
 # React와 연결 하기 위한 CORS 추가 2021.11.22 jsji
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
+    "http://localhost:5173",
 ]
 
 ROOT_URLCONF = "myproject.urls"
@@ -146,8 +147,8 @@ REST_FRAMEWORK = {
 from datetime import datetime, timedelta
 
 SIMPLE_JWT = {
-    #"ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=10),
+    #"ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=20),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,

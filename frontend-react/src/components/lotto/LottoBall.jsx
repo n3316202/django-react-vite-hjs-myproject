@@ -1,4 +1,5 @@
 function LottoBall({ lottoNum }) {
+  
     const handleColor = (lottoNum) => {
         let color = 'black';
 

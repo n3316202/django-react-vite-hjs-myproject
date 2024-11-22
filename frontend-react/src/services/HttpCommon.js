@@ -23,7 +23,8 @@ http.interceptors.request.use(
             config.headers.Refresh = refreshToken;
         } else {
             // 그 외 요청은 헤더에 access_token 넣어서 보내기
-            config.headers.Authorization = accessToken;
+            //config.headers.Authorization = accessToken;
+            config.headers.Authorization = `Bearer ${accessToken}`; //Bearer를 넣을것
         }
         return config;
     },
@@ -48,19 +49,21 @@ http.interceptors.response.use(
         const { config, response } = error;
 
         // 토큰 자동 재발급 필요 외 다른 에러
+        // 401에러가 아니거나 재요청이거나 refresh 요청인 경우 그냥 에러 발생
         if (
-            config.url === `/api/reissue` ||
-            response?.status !== 402 ||
+            config.url === `/account/api/token/refresh/` ||
+            response?.status !== 401 ||
             config.sent
         ) {
             return Promise.reject(error);
         }
 
-        config.sent = true;
-        const access_token = await reIssuedToken(); // 토큰 재발급 받아서
+        // 아닌 경우 토큰 갱신
+        config.sent = true; // 무한 재요청 방지
+        const accessToken = await reIssuedToken(); // 토큰 재발급 받아서
 
-        if (access_token) {
-            config.headers.Authorization = access_token; // 헤더에 넣어서
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`; // 헤더에 넣어서
         }
 
         return http(config); // 다시 요청
@@ -71,14 +74,14 @@ http.interceptors.response.use(
 const reIssuedToken = async () => {
     console.log('토큰 재발급 요청');
     try {
-        await http.get(`/account/api/token/refresh/`).then((response) => {
+        await http.options(`/account/api/token/refresh`).then((response) => {
             console.log(response);
             localStorage.clear();
             localStorage.setItem('accessToken', response.data.token.access);
             localStorage.setItem('refreshToken', response.data.token.refresh);
             localStorage.setItem('userName', response.data.user.username);
 
-            return response.data.access;
+            return response.data.token.access;
         });
     } catch (e) {
         console.log(e);
