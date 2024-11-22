@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from .models import Board
 from .serializers import BoardSerializer
 from rest_framework import generics,viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class BoardsAPIView(APIView):
     
@@ -35,4 +37,5 @@ class BoardAPIView(APIView):
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
