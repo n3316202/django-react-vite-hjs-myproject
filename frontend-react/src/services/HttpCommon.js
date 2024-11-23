@@ -1,4 +1,6 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
+import { jwtDecode } from 'jwt-decode';
 
 const REQUEST_URL = 'http://127.0.0.1:8000';
 
@@ -15,21 +17,25 @@ http.interceptors.request.use(
         console.log('http.interceptors.request.use::');
         console.log(config);
 
-        const accessToken = localStorage.getItem('accessToken');
-        const refreshToken = localStorage.getItem('refreshToken');
+        try {
+            let accessToken = localStorage.getItem('accessToken');
 
-        if (config.url == '/account/api/token/refresh') {
-            // 토큰 재발급 요청일 때만  헤더에 refresh_token 넣어서 보내고
-            config.headers.Refresh = refreshToken;
+            //토큰 만료 상태 체크
+            const user = jwtDecode(accessToken);
+            const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1; // 토큰만료 상태 체크
 
-            const response = await http.post(config.url, { refreshToken });
-            console.log('토큰 재발급 됨');
-            console.log(response);
-        } else {
-            // 그 외 요청은 헤더에 access_token 넣어서 보내기
-            //config.headers.Authorization = accessToken;
-            config.headers.Authorization = `Bearer ${accessToken}`; //Bearer를 넣을것
+            if (isExpired) {
+                accessToken = await reIssuedToken();
+            }
+
+            console.log('accessToken:', accessToken);
+            console.log(`Bearer ${accessToken}`);
+
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        } catch (error) {
+            console.log(error);
         }
+
         return config;
     },
     (error) => {
@@ -40,56 +46,76 @@ http.interceptors.request.use(
 );
 
 // [응답 설정]
-http.interceptors.response.use(
-    // 정상 응답 처리
-    (response) => {
-        console.log('응답성공');
-        return response;
-    },
-    // 에러 처리
-    async (error) => {
-        console.log('응답에러');
-        console.log(error);
-        const { config, response } = error;
+// http.interceptors.response.use(
+//     // 정상 응답 처리
+//     (response) => {
+//         console.log('정상응답');
+//         return response;
+//     },
+//     // 에러 처리
+//     async (error) => {
+//         console.log('응답에러');
+//         console.log(error);
 
-        // 토큰 자동 재발급 필요 외 다른 에러
-        // 401에러가 아니거나 재요청이거나 refresh 요청인 경우 그냥 에러 발생
-        if (
-            config.url === `/account/api/token/refresh/` ||
-            response?.status !== 401 ||
-            config.sent
-        ) {
-            return Promise.reject(error);
-        }
+//         // 토큰 자동 재발급 필요 외 다른 에러
+//         // 401에러가 아니거나 재요청이거나 refresh 요청인 경우 그냥 에러 발생
+//         if (error.response.status === 401) {
+//             const accessToken = localStorage.getItem('accessToken');
 
-        // 아닌 경우 토큰 갱신
-        config.sent = true; // 무한 재요청 방지
-        const accessToken = await reIssuedToken(); // 토큰 재발급 받아서
+//             const user = jwtDecode(accessToken);
+//             const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1; // 토큰만료 상태 체크
 
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`; // 헤더에 넣어서
-        }
+//             if (isExpired) {
+//                 // 토큰 만료
+//                 console.log('토큰 만료');
+//                 const refreshToken = localStorage.getItem('refreshToken');
+//                 const response = await axios.post(
+//                     REQUEST_URL + `/account/api/token/refresh`,
+//                     {
+//                         refresh: refreshToken,
+//                     }
+//                 );
 
-        return http(config); // 다시 요청
-    }
-);
+//                 console.log(response);
+//                 localStorage.clear();
+//                 localStorage.setItem('accessToken', response.data.access);
+//                 localStorage.setItem('refreshToken', response.data.refresh);
 
-// access_token 재발급 요청 (access_token 반환))
+//                 const accessToken = localStorage.getItem('accessToken');
+//                 error.headers.Authorization = `Bearer ${accessToken}`;
+
+//                 // 중단된 요청을(에러난 요청)을 토큰 갱신 후 재요청
+//                 //await axios.request(error.config);
+//                 return error;
+//             }
+//         }
+
+//         return Promise.reject(error);
+//     }
+// );
+
 const reIssuedToken = async () => {
     console.log('토큰 재발급 요청');
-    try {
-        await http.options(`/account/api/token/refresh`).then((response) => {
-            console.log(response);
-            localStorage.clear();
-            localStorage.setItem('accessToken', response.data.token.access);
-            localStorage.setItem('refreshToken', response.data.token.refresh);
-            localStorage.setItem('userName', response.data.user.username);
 
-            return response.data.token.access;
-        });
+    try {
+        const refreshToken = localStorage.getItem('refreshToken');
+        const response = await axios.post(
+            REQUEST_URL + `/account/api/token/refresh`,
+            {
+                refresh: refreshToken,
+            }
+        );
+        console.log(response);
+        localStorage.clear();
+        localStorage.setItem('accessToken', response.data.access);
+        localStorage.setItem('refreshToken', response.data.refresh);
+
+        return response.data.access;
     } catch (e) {
         console.log(e);
     }
+
+    return null;
 };
 
 export default http;
