@@ -11,7 +11,7 @@ const http = axios.create({
 
 // [요청 설정] 모든 요청의 헤더에 토큰 넣어 보내기
 http.interceptors.request.use(
-    (config) => {
+    async (config) => {
         console.log('http.interceptors.request.use::');
         console.log(config);
 
@@ -21,6 +21,10 @@ http.interceptors.request.use(
         if (config.url == '/account/api/token/refresh') {
             // 토큰 재발급 요청일 때만  헤더에 refresh_token 넣어서 보내고
             config.headers.Refresh = refreshToken;
+
+            const response = await http.post(config.url, { refreshToken });
+            console.log('토큰 재발급 됨');
+            console.log(response);
         } else {
             // 그 외 요청은 헤더에 access_token 넣어서 보내기
             //config.headers.Authorization = accessToken;

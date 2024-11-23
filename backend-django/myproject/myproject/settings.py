@@ -56,8 +56,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
+#CORS_ORIGIN_ALLOW_ALL = True #이름이 바꾸어짐
+CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOW_CREDENTIALS = True
 # React와 연결 하기 위한 CORS 추가 2021.11.22 jsji
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
