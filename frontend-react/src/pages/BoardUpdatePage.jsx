@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import boardService from '../services/board/BoardService';
+import ReplyForm from '../components/board/ReplyForm';
+import ReplyForm2 from '../components/board/ReplyForm2';
 
 function BoardUpdatePage() {
     const initBoardState = {
@@ -62,9 +64,7 @@ function BoardUpdatePage() {
                 <div className="container">
                     <div className="row">
                         <div className="card col-md-6 offset-md-3 offset-md-3">
-                            <h3 className="text-center mt-3">
-                                업데이트도 할수 있어요
-                            </h3>
+                            <h3 className="text-center mt-3">내용상세</h3>
                             <div className="card-body">
                                 <div className="form-group">
                                     <label> Type </label>
@@ -126,6 +126,8 @@ function BoardUpdatePage() {
                         </div>
                     </div>
                 </div>
+                <hr />
+                <ReplyForm2></ReplyForm2>
             </div>
         </div>
     );
