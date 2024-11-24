@@ -58,6 +58,29 @@ function BoardUpdatePage() {
             });
     };
 
+    //댓글
+    const [reply, setReply] = useState({
+        name: '',
+        content: '',
+    });
+
+    const replyClick = (e) => {
+        e.preventDefault(); // 기존에 링크 동작을 하지 말아라
+        console.log(board);
+
+        boardService
+            .replyShape(board)
+            .then((response) => {
+                setSubmitted(true);
+                console.log(response.data);
+
+                navigate(`/board`);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
     return (
         <div>
             <div className="container mt-3">
@@ -127,7 +150,10 @@ function BoardUpdatePage() {
                     </div>
                 </div>
                 <hr />
-                <ReplyForm2></ReplyForm2>
+                <ReplyForm2
+                    handleInputChange={handleInputChange}
+                    replyClick={replyClick}
+                ></ReplyForm2>
             </div>
         </div>
     );

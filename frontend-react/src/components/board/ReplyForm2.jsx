@@ -1,6 +1,6 @@
 //https://htmlcssfreebies.com/bootstrap-5-comment-form-section-component/
 
-function ReplyForm2() {
+function ReplyForm2({ handleInputChange, replyClick }) {
     return (
         // HTML<!-- Comment Form 1 - HCF Bootstrap 5 Component -->
         <div className="card my-4">
@@ -19,8 +19,9 @@ function ReplyForm2() {
                                         type="text"
                                         className="form-control"
                                         id="name"
-                                        defaultValue
+                                        name="name"
                                         required
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -35,8 +36,9 @@ function ReplyForm2() {
                                         type="title"
                                         className="form-control"
                                         id="title"
-                                        defaultValue
+                                        name="title"
                                         required
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -50,9 +52,15 @@ function ReplyForm2() {
                                 id="content"
                                 rows="3"
                                 required=""
+                                name="content"
+                                onChange={handleInputChange}
                             ></textarea>
                         </div>
-                        <button type="submit" className="btn btn-primary mt-3">
+                        <button
+                            onClick={replyClick}
+                            type="submit"
+                            className="btn btn-primary mt-3"
+                        >
                             Submit
                         </button>
                     </div>

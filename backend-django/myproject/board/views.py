@@ -46,7 +46,7 @@ class BoardViewSet(viewsets.ModelViewSet):
     #insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, #{bName}, #{bTitle},#{bContent}, #{bGroup}, #{bStep}+1, #{bIndent}+1)
 	#update mvc_board set bStep = bStep + 1 where bGroup = ? and bStep > ?
     
-    @action(detail=False) #특정한 게시판을 위한것이 아니므로 detail=False로
+    @action(detail=False, methods=['PUT']) #특정한 게시판을 위한것이 아니므로 detail=False로
     def reply_shape(self, request):
         
         group = request.data.get('group')

@@ -25,6 +25,10 @@ const remove = (id) => {
     return http.delete(`/board/${id}/`);
 };
 
+const replyShape = (board) => {
+    return http.put(`/board/reply_shape/`, board);
+};
+
 // const removeAll = () => {
 //   return http.delete(`/tutorials`);
 // };
@@ -44,6 +48,7 @@ export default {
     get,
     write,
     update,
+    replyShape,
     // write,
     // update,
     // removeAll,
