@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import action
 
+from django.db.models import F
 
 class BoardsAPIView(APIView):
     
@@ -43,11 +44,20 @@ class BoardViewSet(viewsets.ModelViewSet):
     #authentication_classes = [JWTAuthentication]
 
     #insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, #{bName}, #{bTitle},#{bContent}, #{bGroup}, #{bStep}+1, #{bIndent}+1)
-	#update mvc_board set bStep = bStep + 1 where bGroup = #{bGroup}
+	#update mvc_board set bStep = bStep + 1 where bGroup = ? and bStep > ?
     
     @action(detail=False) #특정한 게시판을 위한것이 아니므로 detail=False로
     def reply_shape(self, request):
-        print('아아아아아아아아')
-        return Response("This is Test")
+        
+        group = request.data.get('group')
+        step = request.data.get('step')
+        indent = request.data.get('indent')
+
+        print(group, step, indent)
+        
+        #Python 메모리로 가져오지 않고, 모델 필드 값을 참조하고 이를 데이터베이스에서 사용하여 작업
+        Board.objects.filter(group=group, step__gte=step).update(step=F('step') + 1)
+       
+        return Response("success", status=status.HTTP_200_OK)
 
 
