@@ -37,5 +37,5 @@ class BoardAPIView(APIView):
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    #permission_classes = [IsAuthenticated]
+    #authentication_classes = [JWTAuthentication]

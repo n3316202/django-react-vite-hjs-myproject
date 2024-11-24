@@ -9,17 +9,17 @@ const getPagingList = (path = '/board', search = '') => {
     return http.get(path + search);
 };
 
-// const get = (id) => {
-//   return http.get(`/rboard/${id}`);
-// };
+const get = (id) => {
+    return http.get(`/board/${id}`);
+};
 
-// const write = (data) => {
-//   return http.post(`/rboard/write`, data);
-// };
+const write = (data) => {
+    return http.post(`/board/`, data);
+};
 
-// const update = (id, data) => {
-//   return http.put(`/rboard/${id}`, data);
-// };
+const update = (id, data) => {
+    return http.put(`/board/${id}/`, data);
+};
 
 const remove = (id) => {
     return http.delete(`/board/${id}/`);
@@ -41,7 +41,9 @@ export default {
     getBoardList,
     getPagingList,
     remove,
-    // get,
+    get,
+    write,
+    update,
     // write,
     // update,
     // removeAll,

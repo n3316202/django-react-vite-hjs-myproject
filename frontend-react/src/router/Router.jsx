@@ -1,9 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './../App';
 import BoardListPage from '../pages/BoardListPage';
+
 import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
 import LottoPage from '../pages/LottoPage';
+import BoardUpdatePage from '../pages/BoardUpdatePage';
 
 const routes = [
     {
@@ -40,6 +42,11 @@ const routes = [
                 loader: () => '게시판',
                 element: <BoardListPage />,
             },
+            {
+                path: '/board/:id',
+                loader: () => '업데이트',
+                element: <BoardUpdatePage />,
+            }, //:day
         ],
     },
     {
