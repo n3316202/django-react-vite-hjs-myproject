@@ -7,6 +7,8 @@ from .serializers import BoardSerializer
 from rest_framework import generics,viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import action
+
 
 class BoardsAPIView(APIView):
     
@@ -39,3 +41,13 @@ class BoardViewSet(viewsets.ModelViewSet):
     serializer_class = BoardSerializer
     #permission_classes = [IsAuthenticated]
     #authentication_classes = [JWTAuthentication]
+
+    #insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, #{bName}, #{bTitle},#{bContent}, #{bGroup}, #{bStep}+1, #{bIndent}+1)
+	#update mvc_board set bStep = bStep + 1 where bGroup = #{bGroup}
+    
+    @action(detail=False) #특정한 게시판을 위한것이 아니므로 detail=False로
+    def reply_shape(self, request):
+        print('아아아아아아아아')
+        return Response("This is Test")
+
+
