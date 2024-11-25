@@ -9,6 +9,7 @@ function BoardUpdatePage() {
     name: "",
     title: "",
     content: "",
+    user: "admin",
   };
   const { id } = useParams();
 

@@ -8,14 +8,12 @@ function BoardWritePage() {
     title: "",
     content: "",
   };
-  const { id } = useParams();
 
+  const [board, setBoard] = useState(initBoardState);
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setBoard({ ...board, [name]: value });
   };
-
-  const [board, setBoard] = useState(initBoardState);
 
   const cancelClick = () => {
     navigate(`/board`);
@@ -30,12 +28,12 @@ function BoardWritePage() {
       name: board.name,
       title: board.title,
       content: board.content,
+      user: "1",
     };
 
     boardService
-      .update(id, data)
+      .write(data)
       .then((response) => {
-        setSubmitted(true);
         console.log(response.data);
         //페이지 이동
         navigate(`/board`);
