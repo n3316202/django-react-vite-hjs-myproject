@@ -38,7 +38,6 @@ class BoardAPIView(APIView):
 
 
 class BoardViewSet(viewsets.ModelViewSet):
-    #queryset = Board.objects.all()
     queryset = Board.objects.all().order_by('-group', 'step')
     serializer_class = BoardSerializer
     #permission_classes = [IsAuthenticated]
