@@ -48,6 +48,7 @@ class BoardViewSet(viewsets.ModelViewSet):
     #"select * from mvc_board order by bgroup desc, bstep asc";
     #insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, #{bName}, #{bTitle},#{bContent}, #{bGroup}, #{bStep}+1, #{bIndent}+1)
 	#update mvc_board set bStep = bStep + 1 where bGroup = ? and bStep > ?
+    #insert into mvc_board (bid, bname, btitle, bContent, bhit, bgroup, bstep, bindent) values (mvc_board_seq.nextval, #{bname}, #{btitle}, #{bcontent}, 0, mvc_board_seq.currval, 0, 0)
     
     # serializer.save() 재정의
     #def perform_create(self, serializer):
