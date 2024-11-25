@@ -1,29 +1,59 @@
 //https://htmlcssfreebies.com/bootstrap-5-comment-form-section-component/
 
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import boardService from "../../services/board/BoardService";
+
 function ReplyForm2({ board }) {
+  //console.log("내가 간다");
+  //console.log(board);
+
   //댓글
-  const [reply, setReply] = useState(...board);
+  const [reply, setReply] = useState(board);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setReply({ ...board, [name]: value });
+    setReply({ ...reply, [name]: value });
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    console.log(reply);
-  }, []);
+    console.log("초기화 실행");
+    setReply(board);
+  }, [board]);
+
+  //insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, ?, ?, ?, ?, ?, ?)
 
   const replyClick = (e) => {
     e.preventDefault(); // 기존에 링크 동작을 하지 말아라
-    console.log(board);
+    console.log(reply);
+
+    const { step, indent } = { ...reply };
+    //console.log({ ...reply, [step]: step + 1, [indent]: indent + 1 });
 
     boardService
-      .replyShape(board)
+      .replyShape(reply)
       .then((response) => {
-        setSubmitted(true);
         console.log(response.data);
+        console.log(response);
 
-        navigate(`/board`);
+        let board = { ...reply };
+        board.step = step + 1;
+        board.indent = indent + 1;
+
+        setReply(board);
+        console.log(reply);
+
+        boardService
+          .write(board)
+          .then((response) => {
+            console.log(response);
+            navigate(`/board`);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       })
       .catch((e) => {
         console.log(e);

@@ -11,11 +11,12 @@ function BoardUpdatePage() {
     content: "",
   };
   const { id } = useParams();
-  
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setBoard({ ...board, [name]: value });
   };
+
   const [board, setBoard] = useState(initBoardState);
   const [submitted, setSubmitted] = useState(false);
 
@@ -120,7 +121,7 @@ function BoardUpdatePage() {
           </div>
         </div>
         <hr />
-        <ReplyForm2 board={board}></ReplyForm2>
+        <ReplyForm2 board={{ ...board }}></ReplyForm2>
       </div>
     </div>
   );
