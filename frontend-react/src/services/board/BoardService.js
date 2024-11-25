@@ -1,32 +1,36 @@
-import http from '../HttpCommon.js';
-import request from '../Requests.js';
+import http from "../HttpCommon.js";
+import request from "../Requests.js";
 
 const getBoardList = () => {
-    return http.get(request.getList);
+  return http.get(request.getList);
 };
 
-const getPagingList = (path = '/board', search = '') => {
-    return http.get(path + search);
+const getPagingList = (path = "/board", search = "") => {
+  return http.get(path + search);
 };
 
 const get = (id) => {
-    return http.get(`/board/${id}`);
+  return http.get(`/board/${id}`);
 };
 
 const write = (data) => {
-    return http.post(`/board/`, data);
+  return http.post(`/board/`, data);
 };
 
 const update = (id, data) => {
-    return http.put(`/board/${id}/`, data);
+  return http.put(`/board/${id}/`, data);
 };
 
 const remove = (id) => {
-    return http.delete(`/board/${id}/`);
+  return http.delete(`/board/${id}/`);
 };
 
 const replyShape = (board) => {
-    return http.put(`/board/reply_shape/`, board);
+  return http.put(`/board/reply_shape/`, board);
+};
+
+const userWrite = () => {
+  return http.post(`/board/user_write/`);
 };
 
 // const removeAll = () => {
@@ -42,16 +46,17 @@ const replyShape = (board) => {
 // };
 
 export default {
-    getBoardList,
-    getPagingList,
-    remove,
-    get,
-    write,
-    update,
-    replyShape,
-    // write,
-    // update,
-    // removeAll,
-    // findByTitle,
-    // getPagingList,
+  getBoardList,
+  getPagingList,
+  remove,
+  get,
+  write,
+  update,
+  replyShape,
+  userWrite,
+  // write,
+  // update,
+  // removeAll,
+  // findByTitle,
+  // getPagingList,
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import boardService from "../services/board/BoardService";
 import PaginationB5 from "../components/board/PaginationB5";
 import Requests from "./../services/Requests";
@@ -60,8 +60,28 @@ const BoardListPage = () => {
         console.log(e);
       });
   };
-  // method:DELETE http://127.0.0.1:8000/board/214/
 
+  const navigate = useNavigate();
+
+  const onClickWrite = (e) => {
+    e.preventDefault(); // 기존에 링크 동작을 하지 말아라
+
+    boardService
+      .userWrite()
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+
+        if (e.status == 401) {
+          //unAutorized 에러
+          alert("글작성을 위해 로그인이 필요합니다.");
+          navigate("/login");
+        }
+      });
+  };
+  // method:DELETE http://127.0.0.1:8000/board/214/
   const deleteBoard = (e) => {
     const { name, value } = e.target;
     console.log(name + "::" + value);
@@ -178,8 +198,12 @@ const BoardListPage = () => {
               </div>
             ) : null}
             <hr />
-            <Link to="/boards/write">
-              <button type="button" className="btn btn-primary">
+            <Link to="/board/user_write/">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={onClickWrite}
+              >
                 글쓰기
               </button>
             </Link>

@@ -16,10 +16,12 @@ http.interceptors.request.use(
   async (config) => {
     //console.log('http.interceptors.request.use::');
     //console.log(config);
-
     try {
       let accessToken = localStorage.getItem("accessToken");
 
+      if (accessToken == null) {
+        return config;
+      }
       //토큰 만료 상태 체크
       const user = jwtDecode(accessToken);
       const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1; // 토큰만료 상태 체크
@@ -28,11 +30,12 @@ http.interceptors.request.use(
         accessToken = await reIssuedToken();
       }
 
-      console.log("accessToken:", accessToken);
-      console.log(`Bearer ${accessToken}`);
+      //console.log("accessToken:", accessToken);
+      //console.log(`Bearer ${accessToken}`);
 
       config.headers.Authorization = `Bearer ${accessToken}`;
     } catch (error) {
+      console.log(요청에러);
       console.log(error);
     }
 
@@ -105,7 +108,8 @@ const reIssuedToken = async () => {
         refresh: refreshToken,
       }
     );
-    console.log(response);
+    //console.log(response);
+    console.log("토큰 갱신");
     localStorage.clear();
     localStorage.setItem("accessToken", response.data.access);
     localStorage.setItem("refreshToken", response.data.refresh);

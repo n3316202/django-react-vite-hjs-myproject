@@ -10,6 +10,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import action
 
 from django.db.models import F
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 class BoardsAPIView(APIView):
     
@@ -59,6 +61,11 @@ class BoardViewSet(viewsets.ModelViewSet):
         #Python 메모리로 가져오지 않고, 모델 필드 값을 참조하고 이를 데이터베이스에서 사용하여 작업
         Board.objects.filter(group=group, step__gt=step).update(step=F('step') + 1)
        
+        return Response("success", status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['POST'], permission_classes = [IsAuthenticated],authentication_classes = [JWTAuthentication])
+    def user_write(self, request):
+        print('안녕하세요')
         return Response("success", status=status.HTTP_200_OK)
 
 
