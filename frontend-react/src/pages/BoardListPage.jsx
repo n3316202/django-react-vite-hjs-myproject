@@ -5,6 +5,7 @@ import boardService from "../services/board/BoardService";
 import PaginationB5 from "../components/board/PaginationB5";
 import Requests from "./../services/Requests";
 import ReplyModal from "../components/board/ReplyModal";
+import WriteModal from "../components/board/WriteModal";
 
 const BoardListPage = () => {
   const [boards, setBoards] = useState([]);
@@ -70,6 +71,7 @@ const BoardListPage = () => {
       .userWrite()
       .then((response) => {
         console.log(response);
+        navigate("/board/write_page");
       })
       .catch((e) => {
         console.log(e);
@@ -198,6 +200,7 @@ const BoardListPage = () => {
               </div>
             ) : null}
             <hr />
+
             <Link to="/board/user_write/">
               <button
                 type="button"
