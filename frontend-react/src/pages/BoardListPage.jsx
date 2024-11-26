@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import boardService from "../services/board/BoardService";
 import PaginationB5 from "../components/board/PaginationB5";
-import Requests from "./../services/Requests";
 import ReplyModal from "../components/board/ReplyModal";
-import WriteModal from "../components/board/WriteModal";
+import requests from "./../http/Requests";
 
 const BoardListPage = () => {
   const [boards, setBoards] = useState([]);
@@ -31,7 +30,7 @@ const BoardListPage = () => {
     getBoards();
   }, []);
 
-  const getBoards = (path = Requests.getList, search = "") => {
+  const getBoards = (path = requests.getList, search = "") => {
     boardService
       .getPagingList(path, search)
       .then((response) => {
