@@ -54,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "myproject.my_custom_middleware.CustomMiddleware",
 ]
 
 #CORS_ORIGIN_ALLOW_ALL = True #이름이 바꾸어짐
@@ -142,6 +143,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {	
 	'DEFAULT_AUTHENTICATION_CLASSES' : [    	
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
 	]
 }
 

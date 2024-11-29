@@ -28,6 +28,7 @@ class AuthView(APIView):
         )
 
         if user is not None:
+            login(request, user) #TODO use login to store session of the logged in user
             serializer = UserSerializer(user)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)

@@ -10,9 +10,9 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import action
 
 from django.db.models import F
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 class BoardsAPIView(APIView):
     
     def get(self, request):
@@ -54,6 +54,16 @@ class BoardViewSet(viewsets.ModelViewSet):
     #def perform_create(self, serializer):
     #    serializer.save(user = self.request.user)
 
+    @permission_classes([IsAuthenticated])
+    @authentication_classes([JWTAuthentication,SessionAuthentication])
+    def create(self, request, *args, **kwargs):
+        user = self.request.user
+        if user:
+            print(user.username,user.id)
+        else:
+            print('하아앙아')
+
+        return super().create(request, *args, **kwargs)
 
     @action(detail=False, methods=['PUT']) #특정한 게시판을 위한것이 아니므로 detail=False로
     def reply_shape(self, request):
@@ -75,3 +85,6 @@ class BoardViewSet(viewsets.ModelViewSet):
         return Response("success", status=status.HTTP_200_OK)
 
 
+    def get_queryset(self):
+        user = self.request.user
+        print(user.username)
